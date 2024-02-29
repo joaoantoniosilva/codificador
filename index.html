@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codificador de Palavras</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: darkblue;
+}
+
+.resultado {
+    margin-top: 20px;
+}
+    </style>
+</head>
+<body>
+    <h1>Codificador de Palavras</h1>
+    <label for="texto">Texto:</label>
+    <input type="text" id="texto" name="texto">
+    <br>
+    <label for="acao">Ação:</label>
+    <select id="acao" name="acao">
+        <option value="criptografar">Criptografar</option>
+        <option value="descriptografar">Descriptografar</option>
+    </select>
+    <br>
+    <button onclick="codificar()">Executar</button>
+    <br>
+    <label for="resultado">Resultado:</label>
+    <input type="text" id="resultado" name="resultado" readonly>
+    <br>
+    <button onclick="copiar()">Copiar</button>
+    <script>
+        function codificar() {
+            const texto = document.getElementById('texto').value;
+            const acao = document.getElementById('acao').value;
+            let resultado = '';
+            if (acao === 'criptografar') {
+                resultado = criptografar(texto);
+            } else if (acao === 'descriptografar') {
+                resultado = descriptografar(texto);
+            }
+            document.getElementById('resultado').value = resultado;
+        }
+
+        function criptografar(texto) {
+            let resultado = '';
+            for (let i = 0; i < texto.length; i++) {
+                const char = texto.charAt(i);
+                if (/[a-z]/.test(char)) {
+                    const index = 'abcdefghijklmnopqrstuvwxyz'.indexOf(char);
+                    const newIndex = (index + 3) % 26;
+                    resultado += 'abcdefghijklmnopqrstuvwxyz'.charAt(newIndex);
+                } else {
+                    resultado += char;
+                }
+            }
+            return resultado;
+        }
+
+        function descriptografar(texto) {
+            let resultado = '';
+            for (let i = 0; i < texto.length; i++) {
+                const char = texto.charAt(i);
+                if (/[a-z]/.test(char)) {
+                    const index = 'abcdefghijklmnopqrstuvwxyz'.indexOf(char);
+                    const newIndex = (index - 3 + 26) % 26;
+                    resultado += 'abcdefghijklmnopqrstuvwxyz'.charAt(newIndex);
+                } else {
+                    resultado += char;
+                }
+            }
+            return resultado;
+        }
+
+        function copiar() {
+            const resultado = document.getElementById('resultado').value;
+            navigator.clipboard.writeText(resultado);
+        }
+    </script>
+</body>
+</html>
